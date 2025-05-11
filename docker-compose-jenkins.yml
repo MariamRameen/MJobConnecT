@@ -1,19 +1,21 @@
 version: '3'
 services:
-  mongo:
-    image: mongo
-    container_name: mongo_jenkins
-    ports:
-      - "27018:27017"
-
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     container_name: backend_jenkins
     ports:
       - "5001:5000"
-    volumes:
-      - ./backend:/app
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_jenkins
+    ports:
+      - "3001:80"
     depends_on:
-      - mongo
+      - backend
+
