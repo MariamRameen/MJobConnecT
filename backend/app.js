@@ -19,6 +19,9 @@ app.use(
     credentials: true,
   })
 );
+app.get("/", (req, res) => {
+  res.send("MJobConnect API is running");
+});
 
 app.use(cookieParser());
 app.use(express.json());
