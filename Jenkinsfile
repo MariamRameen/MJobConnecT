@@ -10,24 +10,21 @@ pipeline {
 
         stage('Clean Existing Containers') {
             steps {
+                // Stop and remove containers and orphaned containers, ignore errors if none exist
+                sh 'docker-compose -p mjobjenkins -f docker-compose-jenkins.yml down --remove-orphans || true'
+
+                // Remove old containers forcibly, ignore errors if not found
                 sh '''
-                  docker-compose -p mjobjenkins -f docker-compose-jenkins.yml down --remove-orphans || true
-                  docker rm -f mjob_backend_jenkins || true
-                  docker rm -f mjob_frontend_jenkins || true
+                  docker rm -f backend_jenkins || true
+                  docker rm -f frontend_jenkins || true
                 '''
             }
         }
 
         stage('Build and Start Containers') {
             steps {
+                // Build images and start containers in detached mode
                 sh 'docker-compose -p mjobjenkins -f docker-compose-jenkins.yml up -d --build'
-            }
-        }
-
-        stage('Wait for App to Start') {
-            steps {
-                echo 'Waiting 90 seconds for the app to start...'
-                sh 'sleep 90'
             }
         }
     }
