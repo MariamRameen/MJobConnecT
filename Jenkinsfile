@@ -10,8 +10,8 @@ pipeline {
 
         stage('Clean Existing Containers') {
             steps {
-                sh 'docker compose -p mjobjenkins -f docker-compose-jenkins.yml down --remove-orphans'
                 sh '''
+                  docker-compose -p mjobjenkins -f docker-compose-jenkins.yml down --remove-orphans || true
                   docker rm -f mjob_backend_jenkins || true
                   docker rm -f mjob_frontend_jenkins || true
                 '''
@@ -20,7 +20,7 @@ pipeline {
 
         stage('Build and Start Containers') {
             steps {
-                sh 'docker compose -p mjobjenkins -f docker-compose-jenkins.yml up -d --build'
+                sh 'docker-compose -p mjobjenkins -f docker-compose-jenkins.yml up -d --build'
             }
         }
 
