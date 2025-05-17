@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-  "http://backend:5000/api/v1/user/login",
+   "http://13.48.48.149:5000/api/v1/user/login",
   { email, password, role },
   {
     headers: {
