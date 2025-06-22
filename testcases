@@ -1,0 +1,138 @@
+test_01_homepage_loads.py
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+def test_homepage_loads():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/")
+    assert "Login" in driver.page_source
+    driver.quit()
+
+test_02_register_page_loads.py
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+def test_register_page_loads():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/register")
+    assert "Create a new account" in driver.page_source
+    driver.quit()
+
+test_03_register_fields_exist.py
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+def test_register_fields_exist():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/register")
+    assert driver.find_element(By.XPATH, "//input[@placeholder='Mariam']")
+    assert driver.find_element(By.XPATH, "//input[@placeholder='mrniazi@gmail.com']")
+    assert driver.find_element(By.XPATH, "//input[@placeholder='12345678']")
+    driver.quit()
+
+test_04_register_button_clickable.py
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+def test_register_button_clickable():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/register")
+    button = driver.find_element(By.XPATH, "//button[text()='Register']")
+    assert button.is_enabled()
+    driver.quit()
+
+test_05_login_page_loads.py
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+def test_login_page_loads():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/login")
+    assert "Login to your account" in driver.page_source
+    driver.quit()
+
+test_06_login_fields_exist.py
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+def test_login_fields_exist():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/login")
+    assert driver.find_element(By.XPATH, "//input[@placeholder='mariam15@gmail.com']")
+    assert driver.find_element(By.XPATH, "//input[@placeholder='Your Password']")
+    driver.quit()
+
+test_07_login_button_clickable.py
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+def test_login_button_clickable():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/login")
+    button = driver.find_element(By.XPATH, "//button[text()='Login']")
+    assert button.is_enabled()
+    driver.quit()
+
+test_08_nav_register_to_login.py
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+import time
+
+def test_nav_register_to_login():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/register")
+    driver.find_element(By.LINK_TEXT, "Login Now").click()
+    time.sleep(1)
+    assert "login" in driver.current_url.lower()
+    driver.quit()
+
+test_09_nav_login_to_register.py
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+import time
+
+def test_nav_login_to_register():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/login")
+    driver.find_element(By.LINK_TEXT, "Register Now").click()
+    time.sleep(1)
+    assert "register" in driver.current_url.lower()
+    driver.quit()
+
+test_10_header_texts.py
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+def test_header_texts():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get("http://13.48.48.149:3000/login")
+    assert "Login to your account" in driver.page_source
+    driver.get("http://13.48.48.149:3000/register")
+    assert "Create a new account" in driver.page_source
+    driver.quit()
