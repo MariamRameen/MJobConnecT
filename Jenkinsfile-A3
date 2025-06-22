@@ -11,8 +11,7 @@ pipeline {
                 echo '📦 Pulling repo and starting test pipeline...'
             }
         }
-
-        stage('Set up venv & Run Selenium Tests') {
+stage('Set up venv & Run Selenium Tests') {
             steps {
                 sh '''#!/bin/bash
                 python3 -m venv $VENV
@@ -24,23 +23,20 @@ pipeline {
                 cat result.log
                 '''
             }
-        }
-
-        stage('Deploy App (if tests pass)') {
+        }stage('Deploy App (if tests pass)') {
             when {
                 expression { currentBuild.currentResult == 'SUCCESS' }
             }
             steps {
                 sh '''#!/bin/bash
                 echo "🛠 Redeploying app via Docker Compose..."
-                docker compose down
-                docker compose up -d --build
+                docker-compose down
+                docker-compose up -d --build
                 '''
             }
         }
     }
-
-    post {
+ post {
         success {
             echo '✅ Tests passed and app deployed. Pipeline complete!'
         }
@@ -49,4 +45,3 @@ pipeline {
         }
     }
 }
-
