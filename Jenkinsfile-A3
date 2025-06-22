@@ -5,13 +5,11 @@ pipeline {
         VENV = "./venv"
     }
 
-    stages {
-        stage('Clone Repo') {
-            steps {
-                echo 'Cloning repository...'
-                checkout scm
-            }
-        }
+    stage('Init') {
+    steps {
+        echo 'Repository cloned by Jenkins. Proceeding to testing...'
+    }
+}
 
         stage('Set up Python & venv') {
             steps {
