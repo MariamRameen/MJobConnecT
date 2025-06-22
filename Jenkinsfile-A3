@@ -6,30 +6,35 @@ pipeline {
     }
 
     stages {
-        stage('Init') {
+        stage('Start') {
             steps {
-                echo 'Repository cloned by Jenkins. Proceeding to testing...'
+                echo '📦 Pulling repo and starting test pipeline...'
             }
         }
 
-        stage('Set up Python & venv') {
+        stage('Set up venv & Run Selenium Tests') {
             steps {
                 sh '''#!/bin/bash
                 python3 -m venv $VENV
                 source $VENV/bin/activate
                 pip install --upgrade pip
                 pip install selenium pytest
+                cd selenium-tests
+                pytest > result.log
+                cat result.log
                 '''
             }
         }
 
-        stage('Run Selenium Tests') {
+        stage('Deploy App (if tests pass)') {
+            when {
+                expression { currentBuild.currentResult == 'SUCCESS' }
+            }
             steps {
                 sh '''#!/bin/bash
-                source $VENV/bin/activate
-                cd selenium-tests
-                pytest > result.log
-                cat result.log
+                echo "🛠 Redeploying app via Docker Compose..."
+                docker compose down
+                docker compose up -d --build
                 '''
             }
         }
@@ -37,10 +42,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ All tests passed successfully!'
+            echo '✅ Tests passed and app deployed. Pipeline complete!'
         }
         failure {
-            echo '❌ Some tests failed. Check result.log for details.'
+            echo '❌ Tests failed or pipeline error occurred.'
         }
     }
 }
